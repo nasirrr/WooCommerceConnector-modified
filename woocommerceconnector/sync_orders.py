@@ -248,7 +248,7 @@ def get_customer_address_from_order(type, woocommerce_order, customer):
     if not address_name:
         country = get_country_name(address_record.get("country"))
         if not frappe.db.exists("Country", country):
-            country = "Switzerland"
+            country = "India"
         try :
             address_name = frappe.get_doc({
                 "doctype": "Address",
@@ -282,6 +282,8 @@ def create_sales_invoice(woocommerce_order, woocommerce_settings, so):
         and so.docstatus==1 and not so.per_billed:
         si = make_sales_invoice(so.name)
         si.woocommerce_order_id = woocommerce_order.get("id")
+        si.razor_pay_id = woocommerce_order.get("transaction_id")
+        si.mode_of_payment_woo = woocommerce_order.get("payment_method_title")
         si.naming_series = woocommerce_settings.sales_invoice_series or "SI-woocommerce-"
         si.flags.ignore_mandatory = True
         set_cost_center(si.items, woocommerce_settings.cost_center)
@@ -298,7 +300,7 @@ def make_payment_entry_against_sales_invoice(doc, woocommerce_settings):
     from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
     payment_entry = get_payment_entry(doc.doctype, doc.name, bank_account=woocommerce_settings.cash_bank_account)
     payment_entry.flags.ignore_mandatory = True
-    payment_entry.reference_no = doc.name
+    payment_entry.reference_no = doc.mode_of_payment_woo
     payment_entry.reference_date = nowdate()
     payment_entry.submit()
 

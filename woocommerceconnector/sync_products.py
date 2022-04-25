@@ -491,7 +491,7 @@ def sync_item_with_woocommerce(item, price_list, warehouse, woocommerce_item=Non
     erp_item.flags.ignore_mandatory = True
 
     if not item.get("woocommerce_product_id"):
-        item_data["status"] = "draft"
+        item_data["status"] = "publish"
 
         create_new_item_to_woocommerce(item, item_data, erp_item, variant_item_name_list)
 
