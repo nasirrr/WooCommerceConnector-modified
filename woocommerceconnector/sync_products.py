@@ -759,7 +759,7 @@ def update_item_stock(item_code, woocommerce_settings, bin=None, force=False):
                 reserved_qty = bin.reserved_qty
             if actual_qty is None:
                     actual_qty = 0
-                if reserved_qty is None:
+            if reserved_qty is None:
                     reserved_qty = 0
                 qty = actual_qty - reserved_qty
 
