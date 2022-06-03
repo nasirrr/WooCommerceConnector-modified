@@ -300,7 +300,8 @@ def make_payment_entry_against_sales_invoice(doc, woocommerce_settings):
     from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
     payment_entry = get_payment_entry(doc.doctype, doc.name, bank_account=woocommerce_settings.cash_bank_account)
     payment_entry.flags.ignore_mandatory = True
-    payment_entry.reference_no = doc.mode_of_payment_woo
+    payment_entry.reference_no = doc.razor_pay_id
+    payment_entry.mode_of_payment = doc.mode_of_payment_woo
     payment_entry.reference_date = nowdate()
     payment_entry.submit()
 
